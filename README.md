@@ -10,6 +10,7 @@ Team Members:
 - Nick Fairneny
 - Emmanuel Castrejon
 - Kobe Charles
+- Cesar Arroyo
 
 Client:
 - Professor Barry Brown – Sierra College
@@ -73,4 +74,3 @@ We will be using the open source [Mozilla DeepSpeech](https://github.com/mozilla
 3. Implement persistent footer
 4. Implement advanced search
 5. Transcribe audio recordings
-

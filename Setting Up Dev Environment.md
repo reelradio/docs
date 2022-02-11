@@ -27,4 +27,7 @@ Creating own development environment
 
 ## Setting up a Development Environment
 1.	Navigate to `/export/dev`
-2.	Clone the dev1 repository 
+2.	Clone the dev1 repository.
+3.	Name the repository anything you would like.
+4.	When maming changes to this development environment git will automatically create a pull request under the user who edited the corresponding folder under `/export/dev`
+5.	Now you can access `https://"FolderName".dev.reelradio.com/update/sub_server.html` to see how the changes are displayed within the development environment you created.

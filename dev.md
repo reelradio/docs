@@ -2,10 +2,11 @@ Creating own Development Environment
 =====================================
 ## First Time Set Up
 ### SSH into the Server
-1.	Using Putty or equivalent program, for the address use `firstname@dev1.reelradio.com`. When prompted for the password use `cloud-prime`
-2.	Use the command `ssh-keygen`to generate a unique key for your git account to easily access the repositories.
-3.  Under `/home/"Name of User"/.ssh` use the command `cat id_rse.pub`
-4.	Copy the generated key file within your github account.
+1.	Using Putty or equivalent program, for the address use `<firstname>@dev1.reelradio.com`
+2.	After logging in for the first time, change your password with the command `passwd`
+3.	Use the command `ssh-keygen`to generate a unique key for your git account to easily access the repositories.
+4.  Under `/home/"Name of User"/.ssh` use the command `cat id_rsa.pub`
+5.	Copy the generated key file within your github account.
     + Log into your GitHub account.
   
     + Click your avatar and choose Settings.
@@ -29,8 +30,11 @@ Creating own Development Environment
 1.	Navigate to `/export/dev`
 2.	Clone the dev1 repository by using the command `git clone git@github.com:reelradio/site.git your_name`
 3.	Name the repository anything you would like.
-4.	When making changes to this development environment use the git command `git branch <branch-name> export/dev/<branch-name>`. After changes are made a pull request will be created under the user who edited the corresponding folder under `/export/dev`
-5.	Now you can access `https://"FolderName".dev.reelradio.com/update/sub_server.html` to see how the changes are displayed within the development environment you created.
+4.	Now you can access `https://"FolderName".dev.reelradio.com` to see how the changes are displayed within the development environment you created.
 
 ## Contributing to the Site
-1. Instructions for this can be found here: https://github.com/reelradio/site#contributing 
+1. Instructions for this can be found [here](https://github.com/reelradio/site#contributing) 
+2. After making changes, checkout a new branch with `git checkout -b <new-branch-name>`
+3. Stage then commit your changes
+4. Then type `git push -u origin <new-branch-name>`
+5. After your branch is ready, go to GitHub and create a new pull request for your branch

@@ -1,5 +1,7 @@
 # Reel Radio migration log
 
+**Migration from `dev1` to `moondog4` was performed on Feb 18, 2022**
+
 Cloned site respository to `/export/web/reelradio` on new production machine: `moondog4`.
 
 Copied over apache2 config files, and symlinked to `sites-enabled`.

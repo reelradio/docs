@@ -30,3 +30,9 @@ Team Cloud Prime
 - [Comprehensive search](search.md)
 - [Embedded audio player](player.md)
 
+## Documentation
+
+- [User guide](user-guide.md)
+- [Developer's guide](dev-guide.md)
+- [Test documentation](tests.md)
+

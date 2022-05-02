@@ -1,6 +1,6 @@
 <div align="center">
   <img src="img/rr-logo.jpg" align=center>
-  <h3>User Manual</h3>
+  <h3>Maintenance Manual</h3>
   <h4>Team Cloud Prime</h4>
   Zed Chance<br>
   Victor Galbraith<br>

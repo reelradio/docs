@@ -33,6 +33,6 @@ Team Cloud Prime
 ## Documentation
 
 - [User guide](user-guide.md)
+- [Maintenance manual](maintenance-manual.md)
 - [Developer's guide](dev-guide.md)
 - [Test documentation](tests.md)
-

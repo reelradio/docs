@@ -236,7 +236,7 @@ The general layout of this file is as follows:
 - JavaScript code
     - Functions
     - `$(document).ready(...)` section, this code runs when the page is fully loaded
-        - `$(“#reel-content”).on(‘load’, ...)` this code runs when the `iframe` loads a new page
+        - `$("#reel-content").on(‘load’, ...)` this code runs when the `iframe` loads a new page
 - HTML body, this is where the `iframe` and HTML audio player are
 
 #### Function description
@@ -253,12 +253,12 @@ The main JavaScript functions used by the player are as follows:
 - `timestampToSeconds`, this function takes in a timestamp from the exhibit links, and converts it to seconds using moment.js
 - `setNowPlayingTitle`, this gets the audio element and sets the now playing text to the exhibit’s title
 - `$(document).ready`, this can be thought of as the main entrypoint of all of the JavaScript code. This function runs when the browser declares that the page is ready. A new Plyr.js player is set up here. 
-    - `$(‘#reel-content’).on(‘load’, ...)`, the `iframe` that loads the site is identified as `reel-content`, so this function runs each time the `iframe` loads a new page. 
+    - `$('#reel-content').on('load', ...)`, the `iframe` that loads the site is identified as `reel-content`, so this function runs each time the `iframe` loads a new page. 
     - This function calls `rewriteUrl` on a few different known patterns, and also sets the title of the page as well as the browser’s URL bar to the current respective values from the page in the `iframe`. This gives the user the illusion that they are browsing between pages when in fact they are never leaving `ram/embedded_player.html`. 
     - In addition, the player normally sits directly on top of the `iframe` on the z-axis via CSS, when the page is scrolled down to the bottom we add margin to the bottom of the `iframe` in order for the player to move below the `iframe` on the y-axis. This allows the users to see all of the content at the very bottom of the current page. 
-- `player.on(‘loadeddata’, ...)`, this function runs when the audio player has fully loaded all data and sets the `isLoaded` flag to true. 
-- `player.on(‘play, ...)`, this function runs when resuming from being paused. It checks to see if the player is already loaded, and if so it recalls `makeRequest` with the current exhibit and play time.
-- `player.on(‘ended’, ...)`, this function runs when the player’s content ends, and sets the `isLoaded` flag to false. 
+- `player.on('loadeddata', ...)`, this function runs when the audio player has fully loaded all data and sets the `isLoaded` flag to true. 
+- `player.on('play', ...)`, this function runs when resuming from being paused. It checks to see if the player is already loaded, and if so it recalls `makeRequest` with the current exhibit and play time.
+- `player.on('ended', ...)`, this function runs when the player’s content ends, and sets the `isLoaded` flag to false. 
 
 The last 3 player functions described in the list above allow the user to play an exhibit, pause and leave for a while, then return and resume. The URL returned by the streaming engine is only valid for the duration of the exhibit plus some padding time, so by re-requesting the URL the user is able to continue playback.
 
@@ -524,7 +524,7 @@ FROM
 WHERE
     MATCH(transcript) AGAINST(query)
     AND
-    filename LIKE CONCAT(‘%’, filestem, ‘.r%’)
+    filename LIKE CONCAT('%', filestem, '.r%')
 ;
 ```
 
@@ -601,7 +601,7 @@ GROUP BY url
 The simplest way to debug JavaScript is to print things to the console. For example,
 
 ```js
-console.log(“view me in the browser’s console”);
+console.log("view me in the browser’s console");
 ```
 
 Some browsers allow you to print out a JavaScript object and interact with it, for example if working with a Plyr.js object named `player`:
@@ -613,7 +613,7 @@ console.log(player);
 Alternatively, if trying to debug on a mobile device, the easiest way is to use `alert`. For example,
 
 ```js
-alert(“this opens an alert window!”);
+alert("this opens an alert window!");
 ```
 
 #### Tips for debugging the web server

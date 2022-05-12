@@ -1,7 +1,9 @@
+<div align="center">
 <img src="img/rr-logo.jpg" align=center>
 
 ReelRadio is a non-profit dedicated to archiving and hosting “Top 40” radio broadcasts from the 50s thru 80s.
 Started in the 1990s, ReelRadio is a subscription based service that allows fans to stream old radio broadcasts.
+</div>
 
 ## Team
 

@@ -33,3 +33,4 @@ Team Cloud Prime
 ## Documentation
 
 - [User guide](user-guide.md)
+- [Developer's guide](dev-guide.md)

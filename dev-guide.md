@@ -29,7 +29,7 @@
   - [Where to add functionality to the player](#where-to-add-functionality-to-the-player)
 - [Advanced Search](#advanced-search)
   - [Bootstrapping the MySQL database on a new machine](#bootstrapping-the-mysql-database-on-a-new-machine)
-    - [Add the FULLTEXT index to the existing exhibits table](#add-the-fulltext-index-to-the-existing-exhibits-table)
+    - [Add the `FULLTEXT` index to the existing exhibits table](#add-the-fulltext-index-to-the-existing-exhibits-table)
     - [Create the `tsearch` table](#create-the-tsearch-table)
     - [Creating the `vsearch` table](#creating-the-vsearch-table)
   - [The `search.php` file](#the-searchphp-file)
@@ -53,6 +53,7 @@
     - [Tips for debugging the web server](#tips-for-debugging-the-web-server)
     - [How to check the status of the web server](#how-to-check-the-status-of-the-web-server)
   - [Software requirements](#software-requirements)
+    - [Minimum browser requirements for embedded audio player](#minimum-browser-requirements-for-embedded-audio-player)
   - [Resources](#resources)
     - [Additional resources for `vsearch`](#additional-resources-for-vsearch)
 
@@ -84,16 +85,16 @@ Other technologies include:
 - Shell scripts (text scraper)
 - Selenium (automated browser testing)
 
-The production machine that hosts the site is rented from [Linode](https://www.linode.com/), as well as the development machine (named dev1, details follow).
+The production machine that hosts the site is rented from [Linode](https://www.linode.com/), as well as the development machine (named `dev1`, details follow).
 The development machine is a lesser powered but otherwise identical build to the production machine. 
 
 The site is version controlled with git, with remote repositories on GitHub.
-The actual site code repository is private, for client request, however some of the tools we used to implement our features are public (viewable here). 
+The actual site code repository is private, for client request, however some of the tools we used to implement our features are public (viewable [here](https://github.com/reelradio)).
 
 ## The `dev1` machine
 
 The `dev1` machine was set up to alleviate the need for each team member to have to set up and locally host the site to work on it.
-Each team member simply ssh’d into the machine and did their work there.
+Each team member simply `ssh`'d into the machine and did their work there.
 This section will describe how we were able to work on the site simultaneously and independently.
 
 The rest of this document assumes that you have access to the development machine. If your username is `foo` then login to the machine using
@@ -107,7 +108,7 @@ and enter your password.
 ### Where the site lives
 
 The web server, Apache, serves files in the `/export/dev` directory using a hostname wildcard.
-So, any folder inside the `/export/dev directory`, for example `/export/dev/foo`, will be served at `foo.dev.reelradio.com`.
+So, any folder inside the `/export/dev` directory, for example `/export/dev/foo`, will be served at `foo.dev.reelradio.com`.
 This enables us to each clone a copy of the site repository, and work independently on the site, all in a fully live and deployed testing environment. 
 
 ### Setting up your own development branch
@@ -129,7 +130,7 @@ Install the PHP dependencies using [composer](https://github.com/composer/compos
 composer install
 ```
 
-This uses the `composer.json` and `composer.lock` file to create a vendor directory.
+This uses the `composer.json` and `composer.lock` file to create a `vendor` directory.
 
 The site’s secrets are not checked into version control, so make a copy of the secrets file using the example file:
 
@@ -141,12 +142,14 @@ and fill out the newly created `.env` file with the necessary secrets. Get these
 
 The site repository is now set up, and the Apache web server will serve these files at `foo.dev.reelradio.com`, so if for example you are working on a file called `bar.html`, you can see the changes live at `foo.dev.reelradio.com/bar.html` in your browser.
 
-> Note: See [tips for debugging the web server](#tips-for-debugging-the-web-server) and how to check the status of the web server in appendix.
+> Note: See [tips for debugging the web server](#tips-for-debugging-the-web-server) and [how to check the status of the web server](#how-to-check-the-status-of-the-web-server) in appendix.
 
 ### Making changes to the site
 
 If a developer is working in the `/export/dev/foo` directory on a new feature in a file called `bar.html`, then the developer can view the changes live at the URL `foo.dev.reelradio.com/bar.html` in their browser. This allows the developer to test their features before committing changes. 
-git is used to version control the site. The site’s `main` branch is considered stable, and should not be directly pushed to. Instead, once ready to commit changes, create a new branch:
+`git` is used to version control the site.
+The site’s `main` branch is considered stable, and should not be directly pushed to.
+Instead, once ready to commit changes, create a new branch:
 
 ```
 git checkout -b new_feature
@@ -159,7 +162,11 @@ git add bar.html
 git commit
 ```
 
-Make sure to use a descriptive commit message, including task number if applicable. Continue to work on the new feature in this new branch until complete, then open a pull request on GitHub (be sure to correctly choose the base of this pull request to be where you want your code to be merged, be it main or an intermediate branch). Describe what the new feature does and if you ran into any problems in the body of this pull request. Team members can comment and review the code, and changes can be made by pushing to this branch. When the code is ready, the pull request can be merged, and the remote branch can be safely deleted. 
+Make sure to use a descriptive commit message, including task number if applicable.
+Continue to work on the new feature in this new branch until complete, then open a pull request on GitHub (be sure to correctly choose the base of this pull request to be where you want your code to be merged, be it `main` or an intermediate branch).
+Describe what the new feature does and if you ran into any problems in the body of this pull request.
+Team members can comment and review the code, and changes can be made by pushing to this branch.
+When the code is ready, the pull request can be merged, and the remote branch can be safely deleted. 
 
 When returning to your site repository to make new changes, make sure to check out main and pull before starting development:
 
@@ -201,6 +208,7 @@ describe table_name;
 Otherwise, use SQL to query the database. A detailed description of the table schema can be found in the [Advanced Search](#advanced-search) section. 
 
 ## Embedded Player
+
 When our team started this project, the site used VLC player to play the radio exhibits. So, a `rtsp` link would start VLC player when a user clicked on an exhibit. The site comprises hundreds of collections, each with many exhibits. Each of these pages have links to start the radio exhibit. Because there are thousands of these links, we did not want to have to rewrite the entirety of them. This also allows us to preserve the old functionality, in case a user wants to opt out of the new player.
 
 So to implement our embedded audio player, we essentially layer it on top of the old site inside an `iframe`, seen below.
@@ -209,7 +217,7 @@ So to implement our embedded audio player, we essentially layer it on top of the
 <img src="img/player-layer.png">
 </div>
 
-While the user “browses” the site, the actual page never changes. Instead, the `iframe` loads the new page. When the user visits a page that contains the links to play exhibits, we use JavaScript to remove the anchor’s `href`, and add a function to the `onclick` event. This function requests the source URL for the exhibit and attaches it to the audio player, and starts the playback.
+While the user "browses" the site, the actual page never changes. Instead, the `iframe` loads the new page. When the user visits a page that contains the links to play exhibits, we use JavaScript to remove the anchor’s `href`, and add a function to the `onclick` event. This function requests the source URL for the exhibit and attaches it to the audio player, and starts the playback.
 
 ### How to view the player
 If a developer is working in the directory `/export/dev/foo`, then view the player at the URL `foo.dev.reelradio.com/ram/embedded_player.html` in your browser.
@@ -236,7 +244,7 @@ The general layout of this file is as follows:
 - JavaScript code
     - Functions
     - `$(document).ready(...)` section, this code runs when the page is fully loaded
-        - `$("#reel-content").on(‘load’, ...)` this code runs when the `iframe` loads a new page
+        - `$("#reel-content").on('load', ...)` this code runs when the `iframe` loads a new page
 - HTML body, this is where the `iframe` and HTML audio player are
 
 #### Function description
@@ -264,7 +272,7 @@ The last 3 player functions described in the list above allow the user to play a
 
 ### How to debug the player
 
-One simple way to see that something in the player is going wrong is if the URL bar is never rewritten from the original `ram/embedded_player.html` link. So, if this is happening you can be sure that the code to rewrite the URL bar is never being reached. Check your browser’s JavaScript console for any errors. If you need to check the logs of the web server see the Tips for debugging the web server section. 
+One simple way to see that something in the player is going wrong is if the URL bar is never rewritten from the original `ram/embedded_player.html` link. So, if this is happening you can be sure that the code to rewrite the URL bar is never being reached. Check your browser’s JavaScript console for any errors. If you need to check the logs of the web server see the [Tips for debugging the web server](#tips-for-debugging-the-web-server) section. 
 
 > Note: See [tips for debugging JavaScript](#tips-for-debugging-javascript) in the appendix.
 
@@ -282,9 +290,9 @@ The site contains hundreds of collections, each with a biography of a radio DJ. 
 
 These steps need to be followed in order to set up the databases for the advanced search feature. More detailed descriptions of how these tables were created are in the following sections, but to get the feature up and running follow these steps:
 
-#### Add the FULLTEXT index to the existing exhibits table
+#### Add the `FULLTEXT` index to the existing exhibits table
 
-In order to sort the results of the exhibit title query by relevance, a FULLTEXT needs to be added to the existing exhibits table. To do that, run this command in MySQL:
+In order to sort the results of the exhibit title query by relevance, a `FULLTEXT` needs to be added to the existing exhibits table. To do that, run this command in MySQL:
 
 ```
 ALTER TABLE exhibits ADD FULLTEXT(title);
@@ -393,8 +401,8 @@ A [Python script](https://github.com/reelradio/transcribe/blob/master/transcribe
 
 Uses `ffmpeg` to convert an `.m4a` file into a `.flac` file (single channel, 16000 Hz)
 
-1. Uploads the .flac file to a Google Cloud Storage bucket (required by Speech-to-Text for audio files over 60 seconds)
-2. Deletes the .flac file from the local machine
+1. Uploads the `.flac` file to a Google Cloud Storage bucket (required by Speech-to-Text for audio files over 60 seconds)
+2. Deletes the `.flac` file from the local machine
 3. Transcribes the uploaded `.flac` file, saving the transcript as a `.txt` file, while also building a MySQL `INSERT` statement and appending it to the `vsearch.sql` file.
 4. Deletes the `.flac` file from the Google Cloud Storage bucket
 5. Simply log into the database and run the updated `vsearch.sql` file to add additional transcripts into the database.
@@ -403,7 +411,7 @@ Uses `ffmpeg` to convert an `.m4a` file into a `.flac` file (single channel, 160
 
 1. Sign in to [Google Cloud Console](https://console.cloud.google.com/)
 2. Go to the project selector page and [create a project](https://console.cloud.google.com/projectselector2/home)
-3. Enable the [Speech-to-Text API (https://cloud.google.com/speech-to-text)
+3. Enable the [Speech-to-Text API](https://cloud.google.com/speech-to-text)
 4. Create a [service account for your project](https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts/create)
 
 > Note: the account needs to have at least Storage Admin access in order to upload to the bucket on Google Cloud.
@@ -423,9 +431,9 @@ Uses `ffmpeg` to convert an `.m4a` file into a `.flac` file (single channel, 160
 1. Pull the [reelradio/transcribe](https://github.com/reelradio/transcribe) repository to the same machine as your audio files.
 2. Edit [`transcribe.py`](https://github.com/reelradio/transcribe/blob/master/transcribe.py#L30-L32) and set `BUCKET_NAME` to the name of your Google Cloud Storage bucket:
 
-<div align="center">
-<img src="img/transcribe-variables.png">
-</div>
+    <div align="center">
+    <img src="img/transcribe-variables.png">
+    </div>
 
 3. Using a linux command line, set your authentication environment variable:
 
@@ -438,7 +446,7 @@ Uses `ffmpeg` to convert an `.m4a` file into a `.flac` file (single channel, 160
     export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/service-account-file.json"
     ```
 
-4. Call transcribe from the command line with the path to the audio file as an argument:
+4. Call `transcribe.py` from the command line with the path to the audio file as an argument:
 
     ```
     python3 transcribe.py path/to/file_name.m4a
@@ -486,7 +494,7 @@ Edit `vloop.sh` to declare the following:
     ./vloop.sh
     ```
 
-    `vloop.sh` does 2 passes, first transcribing all the scoped exhibits matching your specified starting pattern, then matching the remaining exhibits. Duplicates are avoided by checking the txt folder for an existing transcript, scoped or unscoped.
+    `vloop.sh` does 2 passes, first transcribing all the scoped exhibits matching your specified starting pattern, then matching the remaining exhibits. Duplicates are avoided by checking the `txt` folder for an existing transcript, scoped or unscoped.
 
 #### Troubleshooting
 
@@ -532,7 +540,10 @@ with the added benefit of returning a relevance score, which we then used to pri
 
 ### The query that the advanced search performs
 
-We ended up using a query that combines 3 searches: first, one that uses full-text search to query the `tsearch` table of scraped collections pages; second, another that uses full-text search to query the `vsearch` table of transcriptions; and third, one that does a limited keyword search on titles, as the site’s original limited search contained when we took on the project.
+We ended up using a query that combines 3 searches:
+1. First, one that uses full-text search to query the `tsearch` table of scraped collections pages
+2. Second, another that uses full-text search to query the `vsearch` table of transcriptions
+3. Third, one that does a limited keyword search on titles, as the site’s original limited search contained when we took on the project.
 
 We combined these 3 and ordered the results by relevance, making for a much more powerful search feature. See below:
 
@@ -618,7 +629,7 @@ alert("this opens an alert window!");
 
 #### Tips for debugging the web server
 
-Apache stores its logs in `/var/log/apache2`, so to watch the logs while making changes to the site, use this command:
+Apache stores its logs in `/var/log/apache2`, so to watch the error logs while making changes to the site, use this command:
 
 ```
 sudo less /var/log/apache2/reelradio-error.log
@@ -648,7 +659,8 @@ service nginx status
 
 ### Software requirements
 
-Minimum browser requirements for embedded audio player
+#### Minimum browser requirements for embedded audio player
+
 The embedded audio player needs a browser that supports Media Source Extensions. A detailed list of browsers that support MSE can be found at https://caniuse.com/mediasource
 
 The most common browsers supported are:

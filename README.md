@@ -29,7 +29,7 @@ Team Cloud Prime
 
 - [Project proposal](proposal.md)
 - [Site migration to new production machine](migration.md)
-- [Comprehensive search](search.md)
+- [Advanced search](search.md)
 - [Embedded audio player](player.md)
 
 ## Documentation

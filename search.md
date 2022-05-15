@@ -1,4 +1,4 @@
-# Comprehensive search
+# Advanced search
 
 ReelRadio's search bar (named FINDIT), searches for exhibits by title.
 When our team took on the project, we proposed the idea of being able to search all of the text on the site as well as the exhibit title.
